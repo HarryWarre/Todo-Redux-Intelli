@@ -12,11 +12,34 @@ import {
 import React from "react";
 import ItemListTask from "./item-list-task";
 import { useDispatch, useSelector } from "react-redux";
-import { TodoState } from "../../redux/type";
+import { TodoState } from "../../store/type";
+import { clearTodos, removeTodo, toggleTodo } from "../../store/action";
+import { AppDispatch } from "../../store/store";
 
 export default function ListTask() {
   const todos = useSelector((state: TodoState) => state.todos);
-  const dispatch = useDispatch();
+  const searchTerm = useSelector((state: TodoState) => state.searchTerm);
+  const totalTodos = todos.length;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleDeleteTodo = (id: number) => {
+    dispatch(removeTodo(id));
+    console.log(id);
+  };
+
+  const handleDeleteAll = () => {
+    dispatch(clearTodos());
+  };
+
+  const handleToggedTodo = (id: number) => {
+    dispatch(toggleTodo(id));
+    console.log(id);
+  };
+
+  const filteredTodos = todos.filter((todo) =>
+    todo.text.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Card sx={{ padding: 5 }}>
@@ -24,39 +47,50 @@ export default function ListTask() {
         <Typography gutterBottom>
           Todos
           <Badge
-            badgeContent={4}
+            badgeContent={totalTodos}
             color='primary'
+            showZero
             style={{ transform: "translate(15px, 0px)" }}></Badge>
         </Typography>
 
         {/* Button Remove all if task exists */}
-        <Box display={"flex"} justifyContent={"end"}>
-          <Button
-            color='inherit'
-            variant='text'
-            endIcon={<Delete color='error' />}
-            sx={{ textTransform: "capitalize" }}>
-            Remove all
-          </Button>
-        </Box>
+        {filteredTodos.length !== 0 ? (
+          <Box display={"flex"} justifyContent={"end"}>
+            <Button
+              onClick={handleDeleteAll}
+              color='inherit'
+              variant='text'
+              endIcon={<Delete color='error' />}
+              sx={{ textTransform: "capitalize" }}>
+              Remove all
+            </Button>
+          </Box>
+        ) : (
+          ""
+        )}
 
         <List>
           {/* If not task exist */}
-          <ListItem
-            sx={{ border: 1, borderColor: "#bababa", borderRadius: "5px" }}>
-            No Todos available
-          </ListItem>
-
+          {filteredTodos.length !== 0 ? (
+            ""
+          ) : (
+            <ListItem
+              sx={{ border: 1, borderColor: "#bababa", borderRadius: "5px" }}>
+              No Todos available
+            </ListItem>
+          )}
           {/* If task exist */}
-          <ItemListTask />
-          <ItemListTask />
-          <ItemListTask />
+          {filteredTodos.map((todo) => (
+            <ItemListTask
+              key={todo.id}
+              name={todo.text}
+              isComplete={todo.isComplete}
+              onDelete={() => handleDeleteTodo(todo.id)}
+              onTogged={() => handleToggedTodo(todo.id)}
+            />
+          ))}
         </List>
       </CardContent>
-
-      {todos.map((todo) => {
-        return <p>{todo.text}</p>;
-      })}
     </Card>
   );
 }

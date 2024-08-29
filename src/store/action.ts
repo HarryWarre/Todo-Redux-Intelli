@@ -1,6 +1,8 @@
 import {
   ADD_TODO,
+  CLEAR_TODO,
   REMOVE_TODO,
+  SEARCH_TERM,
   Todo,
   TodoActionTypes,
   TOUGGHED_TOTDO,
@@ -19,4 +21,13 @@ export const removeTodo = (id: number): TodoActionTypes => ({
 export const toggleTodo = (id: number): TodoActionTypes => ({
   type: TOUGGHED_TOTDO,
   payload: id,
+});
+
+export const clearTodos = (): TodoActionTypes => ({
+  type: CLEAR_TODO,
+});
+
+export const searchTerm = (term: string): TodoActionTypes => ({
+  type: SEARCH_TERM,
+  payload: term,
 });

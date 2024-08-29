@@ -7,15 +7,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Todo } from "../../redux/type";
-import { addTodo } from "../../redux/action";
-import { AppDispatch } from "../../redux/store";
+import { Todo } from "../../store/type";
+import { addTodo } from "../../store/action";
+import { AppDispatch } from "../../store/store";
 
 export default function AddTask() {
   const [input, setInput] = useState("");
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

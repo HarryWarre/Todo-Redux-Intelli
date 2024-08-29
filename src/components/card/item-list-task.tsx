@@ -1,17 +1,29 @@
-import { CheckBox, Delete } from "@mui/icons-material";
+import React, { useEffect } from "react";
 import {
-  Button,
   Checkbox,
-  IconButton,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Button,
 } from "@mui/material";
-import React from "react";
+import Delete from "@mui/icons-material/Delete";
 
-export default function ItemListTask() {
+interface ItemListTaskProps {
+  name: string;
+  isComplete: boolean;
+  onDelete: () => void;
+  onTogged: () => void;
+}
+
+const ItemListTask: React.FC<ItemListTaskProps> = ({
+  name,
+  isComplete,
+  onDelete,
+  onTogged,
+}) => {
   return (
     <ListItem
+      key={1}
       sx={{
         py: 0.5,
         mt: 2,
@@ -20,12 +32,27 @@ export default function ItemListTask() {
         borderRadius: "5px",
       }}>
       <ListItemIcon>
-        <Checkbox edge='start' checked={false} tabIndex={-1} disableRipple />
+        <Checkbox
+          checked={isComplete}
+          onChange={onTogged}
+          edge='start'
+          tabIndex={-1}
+          disableRipple
+        />
       </ListItemIcon>
-      <ListItemText primary={"Job"} />
-      <Button variant='contained' color='error'>
+
+      <ListItemText
+        primary={name}
+        sx={{
+          textDecoration: isComplete ? "line-through" : "none",
+        }}
+      />
+
+      <Button onClick={onDelete} variant='contained' color='error'>
         <Delete />
       </Button>
     </ListItem>
   );
-}
+};
+
+export default ItemListTask;
