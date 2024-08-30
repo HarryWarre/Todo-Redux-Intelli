@@ -9,23 +9,43 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ItemListTask from "./item-list-task";
 import { useDispatch, useSelector } from "react-redux";
-import { TodoState } from "../../store/type";
-import { clearTodos, removeTodo, toggleTodo } from "../../store/action";
+import { TodoState } from "../../store/types/type";
+import {
+  clearTodos,
+  removeTodo,
+  setHeight,
+  toggleTodo,
+} from "../../store/actions/action";
 import { AppDispatch } from "../../store/store";
+import { toast } from "react-toastify";
 
 export default function ListTask() {
   const todos = useSelector((state: TodoState) => state.todos);
   const searchTerm = useSelector((state: TodoState) => state.searchTerm);
+
   const totalTodos = todos.length;
+
+  const elementRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      dispatch(setHeight(entry.contentRect.height));
+    });
+
+    if (elementRef.current) {
+      resizeObserver.observe(elementRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeleteTodo = (id: number) => {
     dispatch(removeTodo(id));
-    console.log(id);
+    showToastMessage();
   };
 
   const handleDeleteAll = () => {
@@ -34,15 +54,18 @@ export default function ListTask() {
 
   const handleToggedTodo = (id: number) => {
     dispatch(toggleTodo(id));
-    console.log(id);
   };
 
   const filteredTodos = todos.filter((todo) =>
     todo.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const showToastMessage = () => {
+    toast.success("Todo Deleted!");
+  };
+
   return (
-    <Card sx={{ padding: 5 }}>
+    <Card ref={elementRef} sx={{ padding: 5, flexGrow: 1, minHeight: "200px" }}>
       <CardContent>
         <Typography gutterBottom>
           Todos

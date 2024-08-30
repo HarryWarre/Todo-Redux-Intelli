@@ -3,10 +3,11 @@ import {
   CLEAR_TODO,
   REMOVE_TODO,
   SEARCH_TERM,
+  SET_HEIGHT,
   Todo,
   TodoActionTypes,
   TOUGGHED_TOTDO,
-} from "./type";
+} from "../types/type";
 
 export const addTodo = (newTodo: Todo): TodoActionTypes => ({
   type: ADD_TODO,
@@ -30,4 +31,9 @@ export const clearTodos = (): TodoActionTypes => ({
 export const searchTerm = (term: string): TodoActionTypes => ({
   type: SEARCH_TERM,
   payload: term,
+});
+
+export const setHeight = (height: number): TodoActionTypes => ({
+  type: SET_HEIGHT,
+  payload: height,
 });

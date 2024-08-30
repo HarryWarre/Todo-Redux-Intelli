@@ -7,6 +7,7 @@ export interface Todo {
 export interface TodoState {
   todos: Todo[];
   searchTerm: string;
+  height: number;
 }
 
 export const ADD_TODO = "ADD_TODO";
@@ -14,6 +15,11 @@ export const REMOVE_TODO = "REMOVE_TODO";
 export const TOUGGHED_TOTDO = "TOUGGHED_TOTDO";
 export const CLEAR_TODO = "CLEAR_TODO";
 export const SEARCH_TERM = "SEARCH_TERM";
+export const SET_HEIGHT = "SET_HEIGHT";
+interface SetHeight {
+  type: typeof SET_HEIGHT;
+  payload: number;
+}
 
 interface AddTodoAction {
   type: typeof ADD_TODO;
@@ -44,4 +50,5 @@ export type TodoActionTypes =
   | RemoveTodoAction
   | ToggleTodoAction
   | ClearTodoAction
-  | SearchTerm;
+  | SearchTerm
+  | SetHeight;

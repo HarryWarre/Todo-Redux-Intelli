@@ -1,20 +1,16 @@
 import React from "react";
 import "./App.css";
-import { Box, Container, Typography } from "@mui/material";
-import Main from "./main";
+import { Box, Container } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { Todos } from "./modules";
 
 function App() {
   return (
     <Provider store={store}>
       <Box className='App'>
         <Container fixed sx={{ mt: 3 }}>
-          <Typography variant='h4'>Todo App</Typography>
-
-          <Main />
-
-          {/* <Counter /> */}
+          <Todos />
         </Container>
       </Box>
     </Provider>

@@ -30,6 +30,7 @@ const ItemListTask: React.FC<ItemListTaskProps> = ({
         border: 1,
         borderColor: "#bababa",
         borderRadius: "5px",
+        flexGrow: 1,
       }}>
       <ListItemIcon>
         <Checkbox

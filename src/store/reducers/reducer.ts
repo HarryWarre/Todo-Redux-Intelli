@@ -3,14 +3,16 @@ import {
   CLEAR_TODO,
   REMOVE_TODO,
   SEARCH_TERM,
+  SET_HEIGHT,
   TodoActionTypes,
   TodoState,
   TOUGGHED_TOTDO,
-} from "./type";
+} from "../types/type";
 
 const initialState: TodoState = {
   todos: [],
   searchTerm: "",
+  height: 0,
 };
 
 export const todoReducer = (
@@ -48,6 +50,12 @@ export const todoReducer = (
       return {
         ...state,
         searchTerm: action.payload,
+      };
+
+    case SET_HEIGHT:
+      return {
+        ...state,
+        height: action.payload,
       };
 
     default:
