@@ -26,7 +26,7 @@ export default function ListTask() {
   const todos = useSelector((state: TodoState) => state.todos);
   const searchTerm = useSelector((state: TodoState) => state.searchTerm);
 
-  const totalTodos = todos.length;
+  // const totalTodos = todos.length;
 
   const elementRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function ListTask() {
         <Typography gutterBottom>
           Todos
           <Badge
-            badgeContent={totalTodos}
+            badgeContent={filteredTodos.length}
             color='primary'
             showZero
             style={{ transform: "translate(15px, 0px)" }}></Badge>

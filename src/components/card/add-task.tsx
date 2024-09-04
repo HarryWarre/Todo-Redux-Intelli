@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Todo, TodoState } from "../../store/types/type";
 import { addTodo } from "../../store/actions/action";
@@ -17,18 +17,15 @@ import { toast } from "react-toastify";
 export default function AddTask() {
   const [input, setInput] = useState("");
   const heightList = useSelector((state: TodoState) => state.height);
+  const [isFocus, setIsFocus] = useState(false);
+
   const dispatch = useDispatch<AppDispatch>();
 
-  const hasError = React.useMemo(() => input === "", [input]);
-  // Memo that returns a helper message if value is "error" or a blank string if not
-  const getHelperText = React.useMemo(
-    () => (input === "" ? "Please type your todos!" : ""),
-    [input]
-  );
+  const hasError = isFocus && input.trim() === "";
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Not reload
@@ -50,12 +47,13 @@ export default function AddTask() {
     setInput("");
   };
 
+  // Toastify message
   const showToastMessage = (content: string) => {
     toast.success(content + " Added!");
   };
 
   return (
-    <Card sx={{ padding: 5, height: heightList+ 'px'}}>
+    <Card sx={{ padding: 5, height: heightList + "px" }}>
       <CardContent>
         <Typography gutterBottom>Add Todos</Typography>
       </CardContent>
@@ -63,16 +61,19 @@ export default function AddTask() {
         <TextField
           error={hasError}
           required
-          helperText={getHelperText}
+          helperText={hasError ? "Please type your todos!" : ""}
           id='input-task'
           variant='outlined'
           fullWidth
           label='Todo title'
-          // value={input}
           value={input}
-          // onChange={(e) => setInput(e.target.value)}
           onChange={handleChange}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => {
+            setIsFocus(false);
+          }} // Stop Focus will stop validate
           onKeyDown={(e) => {
+            // Submit enter will active here
             if (e.key === "Enter") {
               handleSubmit(e);
             }
@@ -81,7 +82,7 @@ export default function AddTask() {
       </CardContent>
 
       <CardActions sx={{ pl: 2, display: "flex", justifyContent: "center" }}>
-        <Button
+        <Button // Alternative options to add Todo
           size='small'
           variant='contained'
           startIcon={<Add />}
